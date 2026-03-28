@@ -2,7 +2,7 @@
 
 **[English](README.md)** | **[Tiếng Việt](README.vi.md)**
 
-A comprehensive AI agent capability expansion toolkit that turns Claude Code and Gemini CLI into a full engineering team. 20 specialist agents, 46 skills, 16 workflows — one install.
+A comprehensive AI agent capability expansion toolkit that turns Claude Code and Gemini CLI into a full engineering team. 21 specialist agents, 54 skills, 16 workflows — one install.
 
 ```
 Think → Plan → Build → Review → Test → Ship
@@ -82,7 +82,7 @@ Add to your project's `.claude/settings.json`:
 
 ## What's Inside
 
-### 20 Specialist Agents
+### 21 Specialist Agents
 
 | Agent | Domain |
 |-------|--------|
@@ -106,8 +106,9 @@ Add to your project's `.claude/settings.json`:
 | `product-owner` | Product vision, roadmap, backlog |
 | `code-archaeologist` | Legacy code, refactoring, modernization |
 | `explorer-agent` | Codebase discovery, architectural analysis |
+| `code-reviewer` | Plan alignment, code quality, architecture review |
 
-### 46 Skills
+### 54 Skills
 
 <details>
 <summary>Frontend & UI (6)</summary>
@@ -144,8 +145,9 @@ Add to your project's `.claude/settings.json`:
 
 - **testing-patterns** — Unit, integration, mocking strategies
 - **webapp-testing** — Playwright E2E, deep audit, browser testing
-- **tdd-workflow** — RED-GREEN-REFACTOR cycle
-- **code-review-checklist** — Code review standards and checklists
+- **test-driven-development** — RED-GREEN-REFACTOR enforcement (from Superpowers)
+- **requesting-code-review** — Severity-based code review with templates (from Superpowers)
+- **receiving-code-review** — Handle review feedback with technical rigor (from Superpowers)
 - **lint-and-validate** — Linting, type checking, static analysis
 </details>
 
@@ -158,12 +160,13 @@ Add to your project's `.claude/settings.json`:
 </details>
 
 <details>
-<summary>Architecture & Planning (4)</summary>
+<summary>Architecture & Planning (5)</summary>
 
 - **architecture** — System design patterns, ADR documentation
 - **app-builder** — Full-stack scaffolding with 13 project templates
-- **plan-writing** — Task planning, breakdown, dependency graphs
-- **brainstorming** — Socratic questioning, discovery methodology
+- **writing-plans** — 2-5 min task decomposition, TDD-first (from Superpowers)
+- **brainstorming** — Design refinement through dialogue (from Superpowers)
+- **writing-skills** — Meta-skill for creating new skills (from Superpowers)
 </details>
 
 <details>
@@ -176,7 +179,20 @@ Add to your project's `.claude/settings.json`:
 </details>
 
 <details>
-<summary>gstack-Inspired (4) — NEW</summary>
+<summary>Superpowers Methodology (8) — from obra/superpowers</summary>
+
+- **subagent-driven-development** — Fresh subagent per task + 2-stage review
+- **executing-plans** — Execute plans in session with checkpoints
+- **dispatching-parallel-agents** — Run independent tasks in parallel
+- **using-git-worktrees** — Isolated workspaces on branches
+- **systematic-debugging** — 4-phase methodology with root cause tracing
+- **verification-before-completion** — Evidence before assertions
+- **finishing-a-development-branch** — Merge/PR/cleanup decisions
+- **using-superpowers** — Entry point and skill discovery
+</details>
+
+<details>
+<summary>gstack-Inspired (4)</summary>
 
 - **scope-lock** — Restrict agent edits to specified paths (`/freeze` & `/unfreeze`)
 - **cross-ai-review** — Multi-AI code review (Gemini + Codex synthesis)
@@ -185,16 +201,14 @@ Add to your project's `.claude/settings.json`:
 </details>
 
 <details>
-<summary>Other (11)</summary>
+<summary>Other (9)</summary>
 
 - **clean-code** — Pragmatic coding standards (global, always-on)
 - **behavioral-modes** — Agent operational modes
-- **parallel-agents** — Multi-agent orchestration patterns
 - **seo-fundamentals** — SEO, E-E-A-T, Core Web Vitals
 - **geo-fundamentals** — Generative Engine Optimization
 - **i18n-localization** — Internationalization, RTL support
 - **documentation-templates** — README, API docs, templates
-- **systematic-debugging** — 4-phase debugging methodology
 - **performance-profiling** — Web Vitals, bundle analysis
 - **bash-linux** — Shell scripting, critical commands
 - **powershell-windows** — PowerShell patterns, pitfalls
@@ -295,8 +309,8 @@ conductor:
 
 ```
 .agent/
-├── agents/          # 20 specialist agents (.md with frontmatter)
-├── skills/          # 46 domain skills (SKILL.md + scripts/ + references/)
+├── agents/          # 21 specialist agents (.md with frontmatter)
+├── skills/          # 54 skills: domain + methodology (SKILL.md + scripts/ + references/)
 ├── workflows/       # 16 slash commands (.md with $ARGUMENTS)
 ├── rules/           # 3 global rules (routing, checklist, behavior)
 ├── scripts/         # 8 scripts (hooks + validation + analytics)
@@ -390,4 +404,5 @@ MIT
 
 ## Credits
 
-Four features inspired by [gstack](https://github.com/garrytan/gstack) by Garry Tan — built from scratch for the AG Kit architecture.
+- Development methodology from [superpowers](https://github.com/obra/superpowers) by Jesse Vincent — 14 workflow skills embedded directly
+- Four features inspired by [gstack](https://github.com/garrytan/gstack) by Garry Tan — built from scratch for the AG Kit architecture

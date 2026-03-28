@@ -2,7 +2,7 @@
 
 **[English](README.md)** | **[Tiếng Việt](README.vi.md)**
 
-Biến Claude Code và Gemini CLI thành một **đội kỹ sư hoàn chỉnh**. 20 agent chuyên biệt, 46 skill, 16 workflow — cài một lần, dùng mọi project.
+Biến Claude Code và Gemini CLI thành một **đội kỹ sư hoàn chỉnh**. 21 agent chuyên biệt, 54 skill, 16 workflow — cài một lần, dùng mọi project.
 
 ```
 Suy nghĩ → Lập kế hoạch → Xây dựng → Review → Test → Ship
@@ -134,7 +134,7 @@ rm ~/.claude/commands/{plan,create,debug,test,deploy,enhance,orchestrate,brainst
 
 ## Nội Dung Bộ Toolkit
 
-### 20 Agent Chuyên Biệt
+### 21 Agent Chuyên Biệt
 
 Mỗi agent là một "chuyên gia" với tính cách, kiến thức và cách tiếp cận riêng.
 
@@ -160,8 +160,9 @@ Mỗi agent là một "chuyên gia" với tính cách, kiến thức và cách t
 | `product-owner` | Chủ sản phẩm | Tầm nhìn, roadmap, backlog |
 | `code-archaeologist` | Code cũ | Refactor, hiện đại hóa legacy code |
 | `explorer-agent` | Khám phá codebase | Phân tích kiến trúc, audit ban đầu |
+| `code-reviewer` | Review code | Plan alignment, code quality, architecture review |
 
-### 46 Skill (Kỹ Năng)
+### 54 Skill (Kỹ Năng)
 
 Skills là module kiến thức chuyên sâu, chỉ load khi agent cần.
 
@@ -197,8 +198,9 @@ Skills là module kiến thức chuyên sâu, chỉ load khi agent cần.
 |-------|-------|
 | `testing-patterns` | Unit test, integration test, mocking |
 | `webapp-testing` | Playwright E2E, browser testing |
-| `tdd-workflow` | Quy trình RED-GREEN-REFACTOR |
-| `code-review-checklist` | Tiêu chuẩn code review |
+| `test-driven-development` | RED-GREEN-REFACTOR bắt buộc (từ Superpowers) |
+| `requesting-code-review` | Code review với severity template (từ Superpowers) |
+| `receiving-code-review` | Xử lý feedback review nghiêm túc (từ Superpowers) |
 | `lint-and-validate` | Linting, type checking, static analysis |
 
 **Bảo mật (3)**
@@ -213,8 +215,9 @@ Skills là module kiến thức chuyên sâu, chỉ load khi agent cần.
 |-------|-------|
 | `architecture` | System design patterns, ADR |
 | `app-builder` | Khung ứng dụng full-stack (13 templates) |
-| `plan-writing` | Lập kế hoạch, chia task, dependency graph |
-| `brainstorming` | Phương pháp Socratic, khám phá ý tưởng |
+| `writing-plans` | Chia task 2-5 phút, TDD-first (từ Superpowers) |
+| `brainstorming` | Refine ý tưởng qua đối thoại (từ Superpowers) |
+| `writing-skills` | Meta-skill: tạo skill mới (từ Superpowers) |
 
 **AI & Context Engineering (4)**
 | Skill | Mô tả |
@@ -232,7 +235,19 @@ Skills là module kiến thức chuyên sâu, chỉ load khi agent cần.
 | `browser-automation` | Browser daemon với hệ thống ref |
 | `parallel-conductor` | Chạy song song nhiều session trên git worktree |
 
-**Khác (11):** `clean-code`, `behavioral-modes`, `parallel-agents`, `seo-fundamentals`, `geo-fundamentals`, `i18n-localization`, `documentation-templates`, `systematic-debugging`, `performance-profiling`, `bash-linux`, `powershell-windows`
+**Phương pháp luận Superpowers (8 — từ [obra/superpowers](https://github.com/obra/superpowers))**
+| Skill | Mô tả |
+|-------|-------|
+| `subagent-driven-development` | Dispatch subagent per task + 2-stage review |
+| `executing-plans` | Thực thi plan trong session với checkpoints |
+| `dispatching-parallel-agents` | Chạy tasks song song khi độc lập |
+| `using-git-worktrees` | Workspace cô lập trên branch riêng |
+| `systematic-debugging` | 4 bước debug với root cause tracing |
+| `verification-before-completion` | Verify trước khi claim done |
+| `finishing-a-development-branch` | Quyết định merge/PR/cleanup |
+| `using-superpowers` | Entry point và hướng dẫn dùng skills |
+
+**Khác (9):** `clean-code`, `behavioral-modes`, `seo-fundamentals`, `geo-fundamentals`, `i18n-localization`, `documentation-templates`, `performance-profiling`, `bash-linux`, `powershell-windows`
 
 ### 16 Lệnh Slash
 
@@ -486,4 +501,5 @@ MIT — Miễn phí, mã nguồn mở.
 
 ## Ghi công
 
-4 tính năng mới lấy cảm hứng từ [gstack](https://github.com/garrytan/gstack) của Garry Tan (CEO Y Combinator) — được xây dựng lại từ đầu cho kiến trúc AG Kit.
+- Phương pháp luận phát triển từ [superpowers](https://github.com/obra/superpowers) của Jesse Vincent — 14 workflow skills được tích hợp trực tiếp
+- 4 tính năng mới lấy cảm hứng từ [gstack](https://github.com/garrytan/gstack) của Garry Tan (CEO Y Combinator) — được xây dựng lại từ đầu cho kiến trúc AG Kit
