@@ -1,0 +1,12 @@
+# Runtime state files
+.freeze-scope
+.data/
+__pycache__/
+*.pyc
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Shared config (local)
+.shared/
