@@ -1,5 +1,7 @@
 # AG Kit — Antigravity Agent Toolkit
 
+**[English](README.md)** | **[Tiếng Việt](README.vi.md)**
+
 A comprehensive AI agent capability expansion toolkit that turns Claude Code and Gemini CLI into a full engineering team. 20 specialist agents, 46 skills, 16 workflows — one install.
 
 ```

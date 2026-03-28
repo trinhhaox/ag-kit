@@ -1,5 +1,7 @@
 # AG Kit — Bộ Toolkit AI Agent cho Lập Trình Viên
 
+**[English](README.md)** | **[Tiếng Việt](README.vi.md)**
+
 Biến Claude Code và Gemini CLI thành một **đội kỹ sư hoàn chỉnh**. 20 agent chuyên biệt, 46 skill, 16 workflow — cài một lần, dùng mọi project.
 
 ```
