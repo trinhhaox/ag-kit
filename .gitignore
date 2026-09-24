@@ -10,3 +10,8 @@ Thumbs.db
 
 # Shared config (local)
 .shared/
+
+# Preview server state (written into .agent/, which is this kit when symlinked)
+preview.pid
+preview.json
+preview.log

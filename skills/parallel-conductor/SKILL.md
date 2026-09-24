@@ -38,8 +38,8 @@ conductor:
 
 1. **Parse** — Read config, validate tasks are independent
 2. **Isolate** — Create git worktree per session: `git worktree add /tmp/ag-wt-{name} -b {branch}`
-3. **Execute** — Spawn `claude -p "{task}" --cwd /tmp/ag-wt-{name}` for each
-4. **Monitor** — Poll every 60s, track status in `/tmp/ag-conductor-status.json`
+3. **Execute** — Spawn `claude -p "{task}" --permission-mode acceptEdits` inside `/tmp/ag-wt-{name}`; output goes to `/tmp/ag-conductor-logs/{name}.log`
+4. **Monitor** — Poll every 2s, track status in `/tmp/ag-conductor-status.json`
 5. **Collect** — When all done, show summary of changes per session
 6. **Merge** — Auto-merge non-conflicting branches; flag conflicts for human
 
@@ -47,8 +47,9 @@ conductor:
 
 - Maximum 5 concurrent sessions (to avoid API rate limits)
 - Each session gets its own worktree — complete isolation
-- `depends_on` field allows sequencing when needed
-- Failed sessions are logged but don't block others
+- `depends_on` field allows sequencing when needed; a dependent session branches from its dependency's branch (extra dependencies are merged in), so it sees their changes
+- Failed sessions are logged but don't block independent sessions; sessions depending on a failed one are skipped
+- Config is validated up front: unknown dependencies, cycles, duplicate or unsafe names are rejected
 - Always present merge summary before touching base branch
 - Run `/review-cross` on merged result if available
 

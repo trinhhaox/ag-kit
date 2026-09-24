@@ -8,11 +8,12 @@ YAML file with `conductor` root key.
 conductor:
   base_branch: main                    # Branch to create worktrees from
   max_concurrent: 5                    # Max parallel sessions (default: 5)
+  claude_args: "--permission-mode acceptEdits"  # Extra CLI args for each session (this is the default)
   sessions:
     - name: session-name               # Unique identifier (alphanumeric + hyphens)
       task: "Description of work"      # Prompt for Claude Code session
       branch: feat/branch-name         # Git branch name for this session
-      depends_on: other-session        # Optional: wait for this session first
+      depends_on: other-session        # Optional: wait for this session (or a list: [a, b])
 ```
 
 ## Fields
@@ -20,12 +21,13 @@ conductor:
 ### `conductor`
 - `base_branch` (required): Git branch to branch from
 - `max_concurrent` (optional, default 5): Concurrency limit
+- `claude_args` (optional, default `--permission-mode acceptEdits`): Extra arguments passed to every `claude -p` session (string or list)
 
 ### `sessions[]`
 - `name` (required): Unique session ID. Used for worktree path and status tracking.
 - `task` (required): The prompt/instruction for Claude Code. Be specific.
 - `branch` (required): Git branch name. Created automatically. Must not exist.
-- `depends_on` (optional): Name of another session that must complete first.
+- `depends_on` (optional): Name (or list of names) of sessions that must complete successfully first. The session's branch is created from the first dependency's branch and the others are merged in. If a dependency fails, this session is skipped.
 
 ## Example: Full-Stack Feature
 
