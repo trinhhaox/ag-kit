@@ -232,10 +232,10 @@ Master validation scripts that orchestrate skill-level scripts.
 
 ```bash
 # Quick validation during development
-python .agent/scripts/checklist.py .
+python3 .agent/scripts/checklist.py .
 
 # Full verification before deployment
-python .agent/scripts/verify_all.py . --url http://localhost:3000
+python3 .agent/scripts/verify_all.py . --url http://localhost:3000
 ```
 
 ### What They Check

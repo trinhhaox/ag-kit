@@ -67,21 +67,29 @@ Tạo file `.claude/settings.json` trong project:
   "hooks": {
     "PreToolUse": [
       {
-        "matcher": "Read|Edit|Write|Bash|Glob",
+        "matcher": "Read|Edit|MultiEdit|Write|NotebookEdit|Bash|Glob|Grep",
         "hooks": [{
           "type": "command",
           "command": "bash .agent/scripts/privacy-guard.sh",
-          "timeout": 5000
+          "timeout": 5
         }]
       }
     ],
     "PostToolUse": [
       {
-        "matcher": "Edit|Write",
+        "matcher": "Edit|MultiEdit|Write",
         "hooks": [{
           "type": "command",
           "command": "bash .agent/scripts/quality-gate.sh",
-          "timeout": 30000
+          "timeout": 30
+        }]
+      },
+      {
+        "matcher": "*",
+        "hooks": [{
+          "type": "command",
+          "command": "bash .agent/scripts/analytics-hook.sh",
+          "timeout": 5
         }]
       }
     ]
@@ -89,9 +97,13 @@ Tạo file `.claude/settings.json` trong project:
 }
 ```
 
+> Giá trị `timeout` của hook tính bằng **giây**. Hook analytics là tùy chọn.
+> Đặt `AG_QUALITY_GATE=warn` để quality gate chỉ cảnh báo, hoặc `off` để tắt.
+
 **Hooks làm gì:**
-- `privacy-guard.sh` — chặn truy cập file nhạy cảm (`.env`, `.pem`, credentials) + scope lock
-- `quality-gate.sh` — kiểm tra cú pháp TypeScript, JSON, Python, Prisma sau mỗi lần sửa code
+- `privacy-guard.sh` — chặn truy cập file nhạy cảm (`.env`, key, SSH, credentials cloud) + scope lock `/freeze`. Chạy 1 process, ~20ms mỗi lần
+- `quality-gate.sh` — kiểm tra TypeScript (`tsc` incremental, chỉ lỗi của file vừa sửa), JSON/JSONC, YAML, shell, Python, Prisma; lỗi được gửi lại cho agent để tự sửa
+- `analytics-hook.sh` — ghi thống kê tool và skill đã dùng (SQLite local)
 
 ### Cách 2: Cài cho Gemini CLI
 
@@ -421,19 +433,29 @@ Kiểm tra chất lượng (checklist.py / verify_all.py)
 
 | Hook | Khi nào chạy | Làm gì |
 |------|-------------|--------|
-| `privacy-guard.sh` | Trước Read/Edit/Write/Bash | Chặn file nhạy cảm + scope lock |
-| `quality-gate.sh` | Sau Edit/Write | Kiểm tra TypeScript, JSON, Python, Prisma |
-| `analytics-hook.sh` | Sau mọi tool | Ghi metrics (chỉ local) |
+| `privacy-guard.sh` | Trước Read/Edit/Write/Bash/Glob/Grep | Chặn file nhạy cảm + scope lock |
+| `quality-gate.sh` | Sau Edit/Write | Kiểm tra TypeScript, JSON, YAML, shell, Python, Prisma — báo lỗi lại cho agent |
+| `analytics-hook.sh` | Sau mọi tool | Ghi thống kê tool/skill (chỉ local) |
+
+```bash
+python3 .agent/scripts/analytics.py stats --last 7d
+python3 .agent/scripts/analytics.py top-skills --last 30d --json
+python3 .agent/scripts/analytics.py prune --older-than 90d
+```
 
 ### Scripts Kiểm Tra
 
 ```bash
-# Kiểm tra nhanh (trong lúc dev)
-python .agent/scripts/checklist.py .
+# Kiểm tra nhanh (trong lúc dev) — các check chạy song song
+python3 .agent/scripts/checklist.py .
 
 # Kiểm tra toàn diện (trước deploy)
-python .agent/scripts/verify_all.py . --url http://localhost:3000
+python3 .agent/scripts/verify_all.py . --url http://localhost:3000
+
+# Tùy chọn: -j 1 (tuần tự, dừng khi lỗi nghiêm trọng), --json (báo cáo cho CI)
 ```
+
+Chi tiết mọi tùy chọn: [scripts/README.md](scripts/README.md)
 
 Thứ tự ưu tiên: Bảo mật → Lint → Schema → Tests → UX → SEO → Lighthouse → E2E
 

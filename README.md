@@ -58,27 +58,38 @@ Add to your project's `.claude/settings.json`:
   "hooks": {
     "PreToolUse": [
       {
-        "matcher": "Read|Edit|Write|Bash|Glob",
+        "matcher": "Read|Edit|MultiEdit|Write|NotebookEdit|Bash|Glob|Grep",
         "hooks": [{
           "type": "command",
           "command": "bash .agent/scripts/privacy-guard.sh",
-          "timeout": 5000
+          "timeout": 5
         }]
       }
     ],
     "PostToolUse": [
       {
-        "matcher": "Edit|Write",
+        "matcher": "Edit|MultiEdit|Write",
         "hooks": [{
           "type": "command",
           "command": "bash .agent/scripts/quality-gate.sh",
-          "timeout": 30000
+          "timeout": 30
+        }]
+      },
+      {
+        "matcher": "*",
+        "hooks": [{
+          "type": "command",
+          "command": "bash .agent/scripts/analytics-hook.sh",
+          "timeout": 5
         }]
       }
     ]
   }
 }
 ```
+
+> Hook `timeout` values are in **seconds**. The analytics hook is optional.
+> Set `AG_QUALITY_GATE=warn` to make the quality gate report without asking the agent to fix, or `off` to disable it.
 
 ## What's Inside
 
@@ -345,21 +356,31 @@ Validation (checklist.py / verify_all.py)
 
 | Hook | Trigger | Purpose |
 |------|---------|---------|
-| `privacy-guard.sh` | Before Read/Edit/Write/Bash | Block sensitive files (.env, .pem, credentials) + scope lock |
-| `quality-gate.sh` | After Edit/Write | Validate TypeScript, JSON, shell syntax, Prisma, Python |
-| `analytics-hook.sh` | After any tool | Track usage metrics (local only) |
+| `privacy-guard.sh` | Before Read/Edit/Write/Bash/Glob/Grep | Block sensitive files (.env, keys, SSH, cloud credentials) + `/freeze` scope lock. Single process, ~20ms per call |
+| `quality-gate.sh` | After Edit/Write | Validate TypeScript (incremental `tsc`, errors for the edited file only), JSON/JSONC, YAML, shell, Prisma, Python — errors are fed back to the agent to fix |
+| `analytics-hook.sh` | After any tool | Track tool and skill usage (local SQLite only) |
+
+```bash
+python3 .agent/scripts/analytics.py stats --last 7d
+python3 .agent/scripts/analytics.py top-skills --last 30d --json
+python3 .agent/scripts/analytics.py prune --older-than 90d
+```
 
 ### Validation Scripts
 
 ```bash
-# Quick validation (during development)
-python .agent/scripts/checklist.py .
+# Quick validation (during development) — checks run in parallel
+python3 .agent/scripts/checklist.py .
 
 # Full verification (before deploy)
-python .agent/scripts/verify_all.py . --url http://localhost:3000
+python3 .agent/scripts/verify_all.py . --url http://localhost:3000
+
+# Options: -j 1 (sequential, stop on critical failure), --json (CI-friendly report)
 ```
 
 Priority order: Security → Lint → Schema → Tests → UX → SEO → Lighthouse → E2E
+
+See [scripts/README.md](scripts/README.md) for all script options.
 
 ## Per-Project Customization
 
